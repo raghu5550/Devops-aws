@@ -1,0 +1,197 @@
+Ansible Installation
+===============================
+Before installing ansible we need to make all server as paaswordless authentication
+step1:we need to create our own user
+#Useradd test
+#Passwd test
+cd /etc/ssh/
+then we need to enable the “Password authentication” and “Permit root login “ under /etc/ssh/sshd_config file
+#and add created user under /etc/sudoers
+lastline we need add test user same as root.
+
+======================================================================
+step2:Then we can login by test user by using test user password 
+To connect internally to other server by using private ip’s its will ask password each and every time so we need to make keyless authentication by using ‘ssh-keygen’ command run this command under test what we created the user (we need to generate this key in all machine) 
+share this key around all other machine like master to node1, node2, node3 by using “ssh-copy-id” command
+$ ssh-keygen
+$ ssh-copy-id 172.31.24.148(private ips){If we do this it will not ask password to connect next time by using ssh}
+  [share this key around all other machine like master to node1, node2, node3 by using “ssh-copy-id” command]
+
+ssh test@172.31.24.147(if its enters directly to the server 147 Genared key is copied to this server if its not we need to copy the key by using ssh-copy-id 172.31.24.148 )
+===================================================================================
+step3:once all above steps are done we need to configure EPEL Repo
+(path for rpm files:http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+run the command yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+
+then sudo yum install ansible -y
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+$wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+we will .rpm file then we need to run this rpm file
+$ sudo rpm -ivh epel-release-7-8.noarch.rpm
+$ sudo yum install ansible -y                   (while installing ansible it will install all python dependenties)
+$ ansible --version(to check version)
+========================================================================================
+Ansible:ansible is, in short,an IT automation configuration management and provisioning tool.it uses to playbook deploy manage build test and configure anything from environment to website to custom compiled source code for application.
+
+Taking control of your environment with a single tool with ansible you can controle server deployement configuration making everything consistent with modules plugin you can build or hook into other application and controle them aas well.
+
+cd /etc/ansible/ansible.cfg(here we can override ansible accoring our requirement)
+
+
+Hosts file is under cd /etc/ansible/hosts we can add hosts or nodes inside the hosts files to list out all the hosts
+Ansible will use to determine what hosts it has available to talk.
+
+$ansible all --list-hosts
+$sudo vi hosts
+$add below content
+=================
+[local]
+localhost
+[apacheweb]
+172.31.47.197
+172.31.23.254
+===================
+ansible all --list-hosts
+ansible apacheweb -m ping   ----> ping nodes
+
+-------------To overide the hosts-----------
+create host file under /home/etc
+touch hosts
+vi hosts
+add below content
+==================
+[myhost]
+172.31.23.254
+=================
+ansible myhost -i hosts -m ping  ----> to ping my host
+
+------------ad-hoc shell-------------------
+Ad-hoc is used operate something need execute quickely but dont want to save later.
+ansible all -s -m shell -a 'df -h'
+ansible all -s -m shell -a 'cat /etc/redhat-release'
+ansible all -s -m shell -a 'uptime'
+
+==============================================
+
+=============================Playbook===============================
+
+ansible all -s -m shell -a 'yum list installed | grep telnet'
+
+install vim using below command (isntall using command line)
+ansible all -s -m yum -a 'pkg=vim state=installed update_cache=true'
+
+-----------------playbook----------------- 
+Ansible are ansible configuration, deployment,and orchestration(largely the effect of automation or systems deploying elements of control theory) language.they can describe a policy to want remote server to install or enforce or set  of steps in Genaral IT process.ansible playbooks our design files.
+
+playbook will use YAML language.
+YAML(yaml Ain't markup Language) is a powerfull configuration tool for our Devops toolkit its a perfect tool for compiling and running complex configuration and deployement in our ansible playbbok.
+its human readable language it was designed to be easy to map to high leavel language and often see it compared to key/values lists ,assosiated Arrays.
+
+ansible all -s -m shell -a 'yum list installed| grep telnet'
+
+
+myfirstplaybook
+---#My First playbook
+- hosts : apacheweb
+  tasks :
+    -name: Install the tomcat server
+     yum: pkg=tomcat state=installed update_cache=true
+
+ansible-playbook -s myfirstplaybook.yml
+
+where -s indicates switch to root whenever required (-s indicates sudo to root)
+
+myfirstplaybook_variable 
+
+---#My First playbook
+- hosts : apacheweb
+  vars:
+     control_server: 172.31.47.197
+     web_root: /var/www/html
+     myuser: root
+     updatemyfile: 455
+  tasks :
+    -name: Install the tomcat server
+     yum: pkg=tomcat state=installed update_cache=true 
+
+===========================================================================================
+
+Playbook with variable and along with targets
+
+- hosts : apacheweb
+  user: test
+  sudo: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+     control_server: 172.31.47.197
+     web_root: /var/www/html
+     myuser: root
+     updatemyfile: 455
+  tasks :
+    -name: Install the tomcat server
+     yum: pkg=tomcat state=installed update_cache=true 
+
+
+====================================================================================================
+
+- hosts : apacheweb
+  user: test
+  sudo: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+     control_server: 172.31.47.197
+     web_root: /var/www/html
+     myuser: root
+     updatemyfile: 455
+  tasks :
+    -name: Install the tomcat server
+     yum: pkg=tomcat state=installed update_cache=true 
+========================================================================
+
+handlers:
+  after installing tomcat, need to start services
+  after creating file, need to verify format of a file called as handlers
+
+
+--- #my first playbook with variables
+- hosts : all
+  user: test
+  sudo: yes
+  connection: ssh
+  gather_facts: yes
+  vars :
+     control_server: 172.31.47.197
+     web_root: /var/www/html
+     myuser: root
+     updatemyfile: 455
+  vars_prompt:
+  - name: PROMPT
+    prompt: Do you want to run below tasks?
+  tasks :
+  - name: Install the httpd
+    action: yum name=httpd state=installed
+    notify: RestartHTTPD
+  handlers:
+  - name: RestartHTTPD
+    action: service name=httpd state=stopped
+----------------------------------------------------------------------------------------------------------------------
+Modules:modules are considered to be a units of work in ansible its written standalone scripting Language(like python rubby perl bash)
+one of the guiding properties od module is "idempotency" which means if the operation is repeated multiple times it always keep system in to the same.
+
+ansible all -s -m shell -a "yum list installed | grep telent"
+
+ansible ubuntu -m setup -a "filter=ansible_*"
+
+ansible all -m setup -a "filter=ansible_distribution"
+
+ansible all -s -m file -a 'path=/tmp/etc state=directory mode=0700 owner=root'
+
+
+
+
+
+

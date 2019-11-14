@@ -1,0 +1,40 @@
+#!/bin/b
+ash
+#set -x
+
+cd  /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/car_obs
+
+files=`ls *.obs`
+
+for i in $files
+do
+    cd  /home/ec2-user/RTKLIB//rtklib_2.4.3_b33_data/output/car_obs
+
+   #imsi=`ls -l $i | awk -F " " {'print $NF'} | awk -F "_" {'print $1'}`
+   car_time=`ls -l $i | awk -F " " {'print $NF'}| awk -F "_" {'print $3'} |  awk -F "." {'print $1'}`
+  # rename=`echo $imsi"_"rover"_"$timestamp`
+
+  
+ cd /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/rover_obs_nav/
+  rover=`ls *.obs`
+ for r in $rover 
+ do 
+    cd /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/rover_obs_nav/
+	rover_time=`ls -l $r | awk -F " " {'print $NF'}| awk -F "_" {'print $3'} |  awk -F "." {'print $1'}`
+	 sum=$(( $rover_time + 300 ))
+	# sub=$(( $rover_time - 600 ))
+	if [[ $rover_time -lt $car_time && $sum  -ge $car_time ]]
+	then
+	car_obs=`echo $i`
+	car_name=`ls -l $car_obs | awk -F "." {'print $1'}`
+	rover_obs=`echo $r`
+	sub=$(( $rover_time - 600 ))
+    rover_nav=`ls rover"_"$sub*.nav`
+	
+    cd  /home/ec2-user/RTKLIB/RTKLIB-rtklib_2.4.3_b33/app/rnx2rtkp/gcc
+     sudo ./rnx2rtkp -k opts1.conf -o /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/pos/$car_name.pos /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/car_obs/$car_obs /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/rover_obs_nav/$rover_obs /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/rover_obs_nav/$rover_nav	
+	 cd /home/ec2-user/RTKLIB/rtklib_2.4.3_b33_data/output/pos
+        sudo rm -rf  *events.pos
+	fi
+done
+done	
