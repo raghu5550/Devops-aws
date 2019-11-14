@@ -1,0 +1,25 @@
+
+creata new file "config"
+chmod 400 config *.pem
+
+copy paste the below lines
+
+
+Host jump
+HostName 13.228.183.79
+User ec2-user
+IdentityFile ~/.ssh/prod-armis.pem
+
+
+
+
+Host 10.*
+ProxyCommand ssh jump -W %h:%p
+User  root
+IdentityFile ~/.ssh/prod-armis.pem
+
+Host 13.229.50.23
+ProxyCommand ssh jump -W %h:%p
+User root
+IdentityFile ~/.ssh/prod-armis.pem
+~

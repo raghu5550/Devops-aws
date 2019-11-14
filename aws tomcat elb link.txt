@@ -1,0 +1,5 @@
+http://www.cloudops.in/application-load-balancer-with-multiple-tomcat-instances/
+
+
+Tomcat user and group adding 
+vi /etc/systemd/system/tomcat.service

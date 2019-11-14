@@ -1,0 +1,20 @@
+
+
+After a bit of search here I found an answer from How do I clear space on my main system drive on a Linux CentOS system? that worked for me:
+
+If you just want to look for big files and delete those then you could also use find
+
+find / -type f -size +100M
+would search for files only (-type f) with a size > 100MB (-size +100M)
+subsequently you could use the same command to delete them.
+
+find / -type f -size +100M -exec rm \{\} \;
+-exec executes a program which gets passed the file or folder it has found ( {} ), needs to be terminated with \;
+
+don't forget you could add -i to rm to approve or disapprove a deletion.
+
+
+
+https://www.getpagespeed.com/server-setup/clear-disk-space-centos
+
+du -ks /var/* | sort -nr | head

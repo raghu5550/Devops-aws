@@ -1,0 +1,62 @@
+install apache 
+
+https://nodejs.org/en/download/package-manager/#void-linux
+
+
+yum install httd*
+
+edit config file
+ 
+<VirtualHost ec2-54-255-231-42.ap-southeast-1.compute.amazonaws.com>
+   ServerAdmin root@172.31.17.32
+   DocumentRoot /var/www/html
+   DirectoryIndex armis.html
+  <Directory "/var/www/html/HPPTB.com">
+  Options Indexes
+  Order Allow,Deny
+  Allow from all
+</Directory>
+
+<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+</VirtualHost>
+
+For more detials go through below link
+
+https://devops.profitbricks.com/tutorials/install-and-configure-mod_rewrite-for-apache-on-centos-7/
+
+
+
+creat .htaccess inside the HPPTB.com
+
+copy below re_write rules inside the .htaccess
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_METHOD} !OPTIONS
+  RewriteRule ^(.*)$ index.html [L]
+</IfModule>
+save it 
+
+
+
+
+
+
+
+
+
+<IfModule mod_rewrite.c>
+Options Indexes FollowSymLinks
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+

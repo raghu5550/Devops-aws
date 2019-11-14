@@ -1,0 +1,1 @@
+https://medium.com/@indrajeet654/mongodb-replication-with-replica-set-and-arbiters-on-aws-vpc-with-3-instances-ed3439a3e9a5

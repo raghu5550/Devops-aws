@@ -1,0 +1,30 @@
+HOW TO MAKE PASSWORDLESS CONNECTION?
+
+ >>> Frist login as ec2-user
+ >>> add user (test)
+ >> add password to user
+ >> login as a root  and go to  "sudo vi /etc/sudoers" and change the "sudoers permission" in last line of ythe file sudoers
+ >> again login as username(test)
+ >> sudo vi /etc/ssh/sshd_confg
+  >> inside "ssh_congfg" change the passwordAuthenatication and permit login (remove # on both line(remove comment))
+ >> save the file
+ >> now generate a ssh-keygen as user(test)
+ >> ssh-copy-id <private ip of another server>
+ >> first time asked for password 
+ >> next time ssh <private ip of another server>
+
+
+
+
+
+Rather than starting over with a new AMI, you could just issue the following commands on an Amazon Linux EC2 instance...
+
+sudo chkconfig mysqld on
+sudo chkconfig httpd on
+You can check the settings before & after enabling these services to start on boot using the following commands...
+
+sudo chkconfig --list mysqld
+sudo chkconfig --list httpd
+See all services using just...
+
+sudo chkconfig --list

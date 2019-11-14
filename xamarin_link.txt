@@ -1,0 +1,5 @@
+https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x#install-net-core-for-supported-red-hat-enterprise-linux-rhel-versions
+
+https://www.microsoft.com/net/learn/get-started/linux/centos
+
+https://github.com/Microsoft/msbuild

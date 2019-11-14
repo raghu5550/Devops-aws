@@ -1,0 +1,14 @@
+https://pkg.jenkins.io/redhat-stable/   -----> Jenkins Link
+
+
+https://www.tutorialspoint.com/angular2/angular2_hello_world.htm -> angular 2 setup
+
+angular.cli, nodejs.io
+
+nginx installation link
+https://gist.github.com/dragonjet/270cf0139df45d1b7690
+
+
+https://pkg.jenkins.io/redhat-stable/
+
+https://pkg.jenkins.io/redhat-stable/jenkins-2.107.3-1.1.noarch.rpm

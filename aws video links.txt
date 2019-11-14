@@ -1,0 +1,3 @@
+https://www.youtube.com/watch?v=04ayJEEzLNc ---> deploy video
+
+https://www.youtube.com/watch?v=EpFAHis4O4g --> bastion setup/jump server

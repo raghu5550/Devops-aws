@@ -1,0 +1,32 @@
+how tinsta;; maven on ec2 instance
+
+1) install wget
+ sudo yum install wget
+
+2) SEARCH HOW TO INSTALL MAVEN USING WGET-run that command
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+3)) install maven
+ sudo yum install apache-maven
+
+
+
+
+
+
+
+
+4) Creating a Project
+You will need somewhere for your project to reside, create a directory somewhere and start a shell in that directory. On your command line, execute the following Maven goal:
+
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+
+
+export M2_HOME=/usr/share/apache-maven
+export M2=/usr/share/apache-maven/bin
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+export PATH=$PATH:JAVA_HOME:$M2
+to write pop.xml for maven buid refer following site
+
+http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html

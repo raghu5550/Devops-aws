@@ -1,0 +1,3 @@
+ng test  --code-coverage
+
+https://stackoverflow.com/questions/22717187/connect-karma-runner-to-jenkins-ci

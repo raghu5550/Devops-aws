@@ -1,0 +1,3 @@
+java -jar RTKBL.jar RTKBLphase >> log.txt &
+
+java  -jar TCPServer.jar TCPServer >> log.txt &

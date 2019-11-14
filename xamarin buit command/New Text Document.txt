@@ -1,0 +1,5 @@
+mono /Users/sasken/Documents/Armis/SonarQube/sonar-scanner-msbuild-4.2.0.1214-net46/MSBuild.SonarQube.Runner.exe begin /k:"com.armis.PrecisionVehicleTrackingSystem" /n:"Daihatsu-VIMS" /v:"1.0" /d:sonar.login="5b1e6822ebea56a32c8b875238871127cdc01b59"
+
+MSbuild /t:rebuild
+
+mono /Users/sasken/Documents/Armis/SonarQube/sonar-scanner-msbuild-4.2.0.1214-net46/MSBuild.SonarQube.Runner.exe begin /k:"com.armis.PrecisionVehicleTrackingSystem" /n:"Daihatsu-VIMS" /v:"1.0" /d:sonar.login="5b1e6822ebea56a32c8b875238871127cdc01b59"
